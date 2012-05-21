@@ -196,26 +196,32 @@ class fHTML
 	
 	/**
 	 * Prints an `option` tag with the provided value, using the selected value to determine if the option should be marked as selected
-	 * 
+	 *
 	 * @param  string $text            The text to display in the option tag
 	 * @param  string $value           The value for the option
 	 * @param  string $selected_value  If the value is the same as this, the option will be marked as selected
-	 * @return void
+	 * @param  bool   $inline          if false, return the html string instead of printing it.
+	 *
+	 * @return string
 	 */
-	static public function printOption($text, $value, $selected_value=NULL)
+	static public function printOption($text, $value, $selected_value=NULL, $inline=TRUE)
 	{
 		$selected = FALSE;
 		if ($value == $selected_value || (is_array($selected_value) && in_array($value, $selected_value))) {
 			$selected = TRUE;
 		}
-		
-		echo '<option value="' . fHTML::encode($value) . '"';
+
+		$output = '<option value="' . fHTML::encode($value) . '"';
 		if ($selected) {
-			echo ' selected="selected"';
+			$output .= ' selected="selected"';
 		}
-		echo '>' . fHTML::prepare($text) . '</option>';
+		$output .= '>' . fHTML::prepare($text) . '</option>';
+		if ($inline){
+			echo $output;
+		} else {
+			return $output;
+		}
 	}
-	
 	
 	/**
 	 * Sets the proper Content-Type header for a UTF-8 HTML (or pseudo-XHTML) page
